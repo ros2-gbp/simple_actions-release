@@ -1,0 +1,12 @@
+Source: ros-galactic-simple-actions
+Section: misc
+Priority: optional
+Maintainer: David V. Lu!! <davidvlu@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ros-galactic-action-msgs, ros-galactic-ament-cmake, ros-galactic-ament-cmake-clang-format <!nocheck>, ros-galactic-ament-cmake-cppcheck <!nocheck>, ros-galactic-ament-cmake-flake8 <!nocheck>, ros-galactic-ament-cmake-lint-cmake <!nocheck>, ros-galactic-ament-cmake-pep257 <!nocheck>, ros-galactic-ament-cmake-python, ros-galactic-rclcpp, ros-galactic-rclcpp-action, ros-galactic-rclpy, ros-galactic-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-galactic-simple-actions
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-galactic-action-msgs, ros-galactic-rclcpp, ros-galactic-rclcpp-action, ros-galactic-rclpy, ros-galactic-ros-workspace
+Description: Simple library for using the `rclpy/rclcpp` action libraries
