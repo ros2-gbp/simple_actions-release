@@ -1,3 +1,26 @@
+## simple_actions (rolling) - 0.2.1-1
+
+The packages in the `simple_actions` repository were released into the `rolling` distro by running `/usr/bin/bloom-release simple_actions -r rolling -y` on `Tue, 16 Aug 2022 14:30:04 -0000`
+
+The `simple_actions` package was released.
+
+Version of package(s) in repository `simple_actions`:
+
+- upstream repository: https://github.com/DLu/simple_actions.git
+- release repository: unknown
+- rosdistro version: `null`
+- old version: `null`
+- new version: `0.2.1-1`
+
+Versions of tools used:
+
+- bloom version: `0.11.2`
+- catkin_pkg version: `0.5.2`
+- rosdep version: `0.22.1`
+- rosdistro version: `0.9.0`
+- vcstools version: `0.1.42`
+
+
 ## simple_actions (humble) - 0.2.1-1
 
 The packages in the `simple_actions` repository were released into the `humble` distro by running `/usr/bin/bloom-release simple_actions -r humble -y` on `Tue, 16 Aug 2022 00:03:56 -0000`
