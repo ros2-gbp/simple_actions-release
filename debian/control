@@ -1,0 +1,12 @@
+Source: ros-rolling-simple-actions
+Section: misc
+Priority: optional
+Maintainer: David V. Lu!! <davidvlu@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ament-cmake, ament-cmake-clang-format <!nocheck>, ament-cmake-cppcheck <!nocheck>, ament-cmake-flake8 <!nocheck>, ament-cmake-lint-cmake <!nocheck>, ament-cmake-pep257 <!nocheck>, ament-cmake-python, ros-rolling-action-msgs, ros-rolling-action-tutorials-interfaces <!nocheck>, ros-rolling-rclcpp, ros-rolling-rclcpp-action, ros-rolling-rclpy, ros-rolling-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-rolling-simple-actions
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-rolling-action-msgs, ros-rolling-rclcpp, ros-rolling-rclcpp-action, ros-rolling-rclpy, ros-rolling-ros-workspace
+Description: Simple library for using the `rclpy/rclcpp` action libraries
