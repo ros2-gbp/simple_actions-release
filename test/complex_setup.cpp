@@ -38,32 +38,74 @@
 #include <simple_actions/simple_client.hpp>
 #include <simple_actions/simple_server.hpp>
 #include <action_tutorials_interfaces/action/fibonacci.hpp>
-using namespace std::chrono_literals;
 
-bool execute(const action_tutorials_interfaces::action::Fibonacci::Goal&,
-             action_tutorials_interfaces::action::Fibonacci::Result&)
-{
-  return false;
-}
+#include <action_tutorials_interfaces/action/fibonacci.hpp>
+#include <simple_actions/simple_client.hpp>
 
-TEST(Smoke, clientTest)
-{
-  rclcpp::Node::SharedPtr node = std::make_shared<rclcpp::Node>("client_demo");
-  simple_actions::SimpleActionClient<action_tutorials_interfaces::action::Fibonacci> client(node, "fibonacci", false);
-  EXPECT_FALSE(client.waitForServer(1s));
-  EXPECT_FALSE(client.getLatestResultCode());
-}
+using Fibonacci = action_tutorials_interfaces::action::Fibonacci;
 
-TEST(Smoke, serverTest)
+class TestComplexSetup : public ::testing::Test
 {
-  rclcpp::Node::SharedPtr node = std::make_shared<rclcpp::Node>("server_demo");
-  simple_actions::SimpleActionServer<action_tutorials_interfaces::action::Fibonacci> server(
-      node, "fibonacci", std::bind(&execute, std::placeholders::_1, std::placeholders::_2));
+protected:
+  static void SetUpTestCase()
+  {
+    rclcpp::init(0, nullptr);
+  }
+
+  void SetUp()
+  {
+    // Instantiate the action client we test with
+    server_node_ = std::make_shared<rclcpp::Node>("server_node");
+    fibonacci_action_server_ = std::make_shared<simple_actions::SimpleActionServer<Fibonacci>>(
+        server_node_, "/fibonacci", [](const Fibonacci::Goal& /*goal*/, Fibonacci::Result& result) {
+          result.sequence = {0, 1, 1, 2, 3, 5, 8, 13};
+          return true;
+        });
+
+    client_node_ = std::make_shared<rclcpp::Node>("client_node");
+    fibonacci_action_client_ =
+        std::make_shared<simple_actions::SimpleActionClient<Fibonacci>>(client_node_, "/fibonacci");
+
+    executor_.add_node(server_node_);
+    executor_.add_node(client_node_);
+
+    executor_future_handle_ = std::async(std::launch::async, [&]() -> void { executor_.spin(); });
+  }
+
+  static void TearDownTestCase()
+  {
+    rclcpp::shutdown();
+  }
+
+  void TearDown()
+  {
+    // Clean up resources
+    fibonacci_action_server_.reset();
+    fibonacci_action_client_.reset();
+
+    executor_.cancel();
+  }
+
+  std::shared_ptr<rclcpp::Node> server_node_;
+  std::shared_ptr<rclcpp::Node> client_node_;
+
+  std::shared_ptr<simple_actions::SimpleActionServer<Fibonacci>> fibonacci_action_server_;
+  std::shared_ptr<simple_actions::SimpleActionClient<Fibonacci>> fibonacci_action_client_;
+
+  rclcpp::executors::MultiThreadedExecutor executor_;
+  std::future<void> executor_future_handle_;
+};
+
+TEST_F(TestComplexSetup, succeeds_fine)
+{
+  Fibonacci::Goal goal_msg;
+  goal_msg.order = 10;
+  auto result = fibonacci_action_client_->execute(goal_msg, nullptr, false);
+  EXPECT_EQ(fibonacci_action_client_->getLatestResultCode(), simple_actions::ResultCode::SUCCEEDED);
 }
 
 int main(int argc, char** argv)
 {
-  rclcpp::init(argc, argv);
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
