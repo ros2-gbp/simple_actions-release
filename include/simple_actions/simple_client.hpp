@@ -39,6 +39,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <simple_actions/utilities.hpp>
+#include <optional>
 
 namespace simple_actions
 {
@@ -100,6 +101,14 @@ public:
   }
 
   /**
+   * @brief Waits for the server to come up. Will fail after the set timeout
+   */
+  bool waitForServer(std::chrono::duration<int64_t, std::milli> timeout)
+  {
+    return client_->wait_for_action_server(timeout);
+  }
+
+  /**
    * @brief Send a goal, and return immediately
    */
   void sendGoal(const typename ACTION_TYPE::Goal& goal_msg, ResultCallback resultCB = nullptr,
@@ -129,7 +138,7 @@ public:
    * @note: Does not return the ResultCode
    */
   typename ACTION_TYPE::Result& execute(const typename ACTION_TYPE::Goal& goal_msg,
-                                        FeedbackCallback feedbackCB = nullptr)
+                                        FeedbackCallback feedbackCB = nullptr, bool spin_locally = true)
   {
     using std::placeholders::_1;
     using std::placeholders::_2;
@@ -137,15 +146,27 @@ public:
     sendGoal(goal_msg, std::bind(&SimpleActionClient::executeResultCallback, this, _1, _2), feedbackCB);
     while (!execute_result_recieved_ && rclcpp::ok())
     {
-      rclcpp::spin_some(node_);
+      if (spin_locally)
+      {
+        rclcpp::spin_some(node_);
+      }
+      else
+      {
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(10ms);
+      }
     }
     return execute_result_;
   }
 
-protected:
-  void goalResponseCallback(std::shared_future<typename rclcpp_action::ClientGoalHandle<ACTION_TYPE>::SharedPtr> future)
+  std::optional<ResultCode> getLatestResultCode() const
   {
-    auto goal_handle = future.get();
+    return execute_result_recieved_ ? std::optional(latest_result_code_) : std::nullopt;
+  }
+
+protected:
+  void goalResponseCallback(typename rclcpp_action::ClientGoalHandle<ACTION_TYPE>::SharedPtr goal_handle)
+  {
     if (!goal_handle)
     {
       if (result_cb_)
@@ -193,15 +214,17 @@ protected:
     }
   }
 
-  void executeResultCallback(ResultCode, const typename ACTION_TYPE::Result& result)
+  void executeResultCallback(ResultCode code, const typename ACTION_TYPE::Result& result)
   {
+    latest_result_code_ = code;
     execute_result_ = result;
     execute_result_recieved_ = true;
   }
 
   typename rclcpp_action::Client<ACTION_TYPE>::SharedPtr client_;
   typename ACTION_TYPE::Result default_result_, execute_result_;
-  bool execute_result_recieved_;
+  bool execute_result_recieved_ = false;
+  ResultCode latest_result_code_;
 
   FeedbackCallback feedback_cb_;
   ResultCallback result_cb_;
