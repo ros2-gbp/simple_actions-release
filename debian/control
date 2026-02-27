@@ -1,0 +1,12 @@
+Source: ros-humble-simple-actions
+Section: misc
+Priority: optional
+Maintainer: David V. Lu!! <david@metrorobots.com>
+Build-Depends: debhelper (>= 9.0.0), ros-humble-action-msgs, ros-humble-ament-cmake, ros-humble-ament-cmake-gtest <!nocheck>, ros-humble-ament-cmake-python, ros-humble-example-interfaces <!nocheck>, ros-humble-rclcpp, ros-humble-rclcpp-action, ros-humble-rclpy, ros-humble-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-humble-simple-actions
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-humble-action-msgs, ros-humble-rclcpp, ros-humble-rclcpp-action, ros-humble-rclpy, ros-humble-ros-workspace
+Description: Simple library for using the `rclpy/rclcpp` action libraries
