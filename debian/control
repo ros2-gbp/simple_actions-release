@@ -1,0 +1,12 @@
+Source: ros-kilted-simple-actions
+Section: misc
+Priority: optional
+Maintainer: David V. Lu!! <david@metrorobots.com>
+Build-Depends: debhelper (>= 9.0.0), ros-kilted-action-msgs, ros-kilted-ament-cmake, ros-kilted-ament-cmake-gtest <!nocheck>, ros-kilted-ament-cmake-python, ros-kilted-example-interfaces <!nocheck>, ros-kilted-rclcpp, ros-kilted-rclcpp-action, ros-kilted-rclpy, ros-kilted-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-kilted-simple-actions
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-kilted-action-msgs, ros-kilted-rclcpp, ros-kilted-rclcpp-action, ros-kilted-rclpy, ros-kilted-ros-workspace
+Description: Simple library for using the `rclpy/rclcpp` action libraries
