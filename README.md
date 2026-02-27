@@ -1,3 +1,26 @@
+## simple_actions (kilted) - 0.5.0-1
+
+The packages in the `simple_actions` repository were released into the `kilted` distro by running `/usr/bin/bloom-release simple_actions -r kilted -y` on `Fri, 27 Feb 2026 17:30:54 -0000`
+
+The `simple_actions` package was released.
+
+Version of package(s) in repository `simple_actions`:
+
+- upstream repository: https://github.com/DLu/simple_actions.git
+- release repository: https://github.com/ros2-gbp/simple_actions-release.git
+- rosdistro version: `null`
+- old version: `null`
+- new version: `0.5.0-1`
+
+Versions of tools used:
+
+- bloom version: `0.13.0`
+- catkin_pkg version: `1.1.0`
+- rosdep version: `0.26.0`
+- rosdistro version: `1.0.1`
+- vcstools version: `0.1.42`
+
+
 ## simple_actions (jazzy) - 0.5.0-1
 
 The packages in the `simple_actions` repository were released into the `jazzy` distro by running `/usr/bin/bloom-release simple_actions -r jazzy -y` on `Fri, 27 Feb 2026 17:20:57 -0000`
