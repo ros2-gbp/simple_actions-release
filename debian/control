@@ -1,0 +1,12 @@
+Source: ros-lyrical-simple-actions
+Section: misc
+Priority: optional
+Maintainer: David V. Lu!! <david@metrorobots.com>
+Build-Depends: debhelper (>= 9.0.0), ros-lyrical-action-msgs, ros-lyrical-ament-cmake, ros-lyrical-ament-cmake-gtest <!nocheck>, ros-lyrical-ament-cmake-python, ros-lyrical-example-interfaces <!nocheck>, ros-lyrical-rclcpp, ros-lyrical-rclcpp-action, ros-lyrical-rclpy, ros-lyrical-ros-workspace
+Homepage: https://index.ros.org/p/simple_actions/#lyrical
+Standards-Version: 3.9.2
+
+Package: ros-lyrical-simple-actions
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-lyrical-action-msgs, ros-lyrical-rclcpp, ros-lyrical-rclcpp-action, ros-lyrical-rclpy, ros-lyrical-ros-workspace
+Description: Simple library for using the `rclpy/rclcpp` action libraries
